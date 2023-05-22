@@ -4,3 +4,4 @@
 [submodule "frontend"]
 	path = frontend
 	url = git@github.com:DutchStudentHousing/Frontend-draft.git
+	branch = feature-dockerize
