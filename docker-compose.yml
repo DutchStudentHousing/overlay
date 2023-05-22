@@ -18,7 +18,7 @@ services:
       - FRONTEND_PORT=4200
     command: /bin/bash -c "envsubst < /etc/nginx/nginx.conf.tmpl > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
   frontend:
-    build: ./frontend
+    build: ./Frontend-draft
     restart: always
     networks:
       - front-tier
@@ -29,8 +29,8 @@ services:
       - db
     build: ./api
     restart: always
-    volumes:
-      - ./api/build/libs/api-0.0.1-SNAPSHOT.jar:/app/api.jar:Z
+    # volumes:
+    #   - ./api/build/libs/api-0.0.1-SNAPSHOT.jar:/app/api.jar:Z
     networks:
       - front-tier
       - back-tier
