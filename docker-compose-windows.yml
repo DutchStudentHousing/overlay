@@ -67,7 +67,7 @@ services:
       retries: 3
   seeder:
     build:
-      context: /DSH Json
+      context: /seeder
       dockerfile: Dockerfile
     depends_on:
        db:
