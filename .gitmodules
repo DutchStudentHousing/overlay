@@ -5,3 +5,6 @@
 	path = frontend
 	url = git@github.com:DutchStudentHousing/Frontend-draft.git
 	branch = feature-dockerize
+[submodule "seeder"]
+	path = seeder
+	url = git@github.com:DutchStudentHousing/DSH-Json.git
