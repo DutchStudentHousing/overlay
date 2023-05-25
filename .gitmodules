@@ -1,7 +1,7 @@
 [submodule "api"]
 	path = api
-	url = git@github.com:DutchStudentHousing/api-reactive.git
+	url = https://github.com/DutchStudentHousing/api-reactive.git
 [submodule "frontend"]
 	path = frontend
-	url = git@github.com:DutchStudentHousing/Frontend-draft.git
+	url = https://github.com/DutchStudentHousing/Frontend-draft.git
 	branch = feature-dockerize
