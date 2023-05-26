@@ -6,11 +6,12 @@ services:
     image: nginx:1.14.2
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf.tmpl:Z
+      # - ./mime.types:/etc/nginx/mime.types:Z
     restart: always
     networks:
       - front-tier
     ports:
-      - "80:80"
+      - "8081:8080"
     environment:
       - BACKEND_HOST=backend
       - BACKEND_PORT=3000
@@ -18,8 +19,7 @@ services:
       - FRONTEND_PORT=4200
     command: ./bin/bash -c "envsubst < ./etc/nginx/conf.d/default.conf.tmpl > ./etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   frontend:
-    build:
-      dockerfile: ./frontend.Dockerfile
+    build: ./frontend
     restart: always
     networks:
       - front-tier
@@ -28,14 +28,15 @@ services:
   backend:
     depends_on:
       - db
-    build: 
-      dockerfile: ./api.Dockerfile
+    build: ./api
     restart: always
+    volumes:
+      - ./api/build/libs/api-0.0.1-SNAPSHOT.jar:/app/api.jar:Z
     networks:
       - front-tier
       - back-tier
     ports:
-      - "3000:8433"
+      - "3000:3000"
     environment:
       - DSH_USER=dsh
       - DSH_DB=dsh
@@ -43,34 +44,33 @@ services:
       - DSH_PASS=dsh
       - DSH_HOST=db
       - DSH_PORT=5432
-      # secrets:
-      #   - postgres-passwd
+    # secrets:
+     #   - postgres-passwd
   db:
     image: postgis/postgis # <- replace?
     restart: always
     networks:
       - back-tier
     volumes:
-      - ./db-data:/var/lib/postgresql/data:Z
+      - ./db-data:/var/lib/postgresql/data:rw
     environment:
       - POSTGRES_DB=dsh
       - POSTGRES_USER=dsh
       - POSTGRES_PASSWORD=dsh
       #  POSTGRES_PASSWORD_FILE=/run/secrets/postgres-passwd
-      #secrets:
-      #  - postgres-passwd
+    #secrets:
+     #  - postgres-passwd
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U dsh" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 30s
       timeout: 30s
       retries: 3
-    ports:
-      - "5432:5432"
   seeder:
     build:
-      dockerfile: seeder.Dockerfile
+      context: /seeder
+      dockerfile: Dockerfile
     depends_on:
-      db:
+       db:
         condition: service_healthy
 
     networks:
@@ -81,6 +81,12 @@ services:
       DSH_DB: dsh
       DSH_USER: dsh
       DSH_PASSWORD: dsh
+
+secrets:
+  postgres-passwd:
+    external: true
+volumes:
+  db-data:
 
 networks:
   front-tier:
