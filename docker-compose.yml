@@ -6,12 +6,11 @@ services:
     image: nginx:1.14.2
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf.tmpl:Z
-      # - ./mime.types:/etc/nginx/mime.types:Z
     restart: always
     networks:
       - front-tier
     ports:
-      - "8081:8080"
+      - "80:80"
     environment:
       - BACKEND_HOST=backend
       - BACKEND_PORT=3000
@@ -19,7 +18,8 @@ services:
       - FRONTEND_PORT=4200
     command: ./bin/bash -c "envsubst < ./etc/nginx/conf.d/default.conf.tmpl > ./etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   frontend:
-    build: /frontend
+    build:
+      dockerfile: ./frontend.Dockerfile
     restart: always
     networks:
       - front-tier
@@ -28,22 +28,21 @@ services:
   backend:
     depends_on:
       - db
-    build: api.Dockerfile
+    build: 
+      dockerfile: ./api.Dockerfile
     restart: always
-    #volumes:
-    #  - ./api/build/libs/api-0.0.1-SNAPSHOT.jar:/app/api.jar:Z
     networks:
       - front-tier
       - back-tier
     ports:
-      - "3000:3000"
+      - "3000:8433"
     environment:
       - DSH_USER=dsh
       - DSH_DB=dsh
       # - DSH_PASS_FILE=/run/secrets/postgres-passwd
       - DSH_PASS=dsh
       - DSH_HOST=db
-      - DSH_PORT=5432
+      - DSH_PORT=5433
       # secrets:
       #   - postgres-passwd
   db:
@@ -52,7 +51,7 @@ services:
     networks:
       - back-tier
     volumes:
-      - ./db-data:/var/lib/postgresql/data:rw
+      - ./db-data:/var/lib/postgresql/data:Z
     environment:
       - POSTGRES_DB=dsh
       - POSTGRES_USER=dsh
@@ -61,16 +60,15 @@ services:
       #secrets:
       #  - postgres-passwd
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ "CMD-SHELL", "pg_isready -U dsh" ]
       interval: 30s
       timeout: 30s
       retries: 3
     ports:
-      - "5432:5432"
+      - "5433:5432"
   seeder:
     build:
-      context: /seeder
-      dockerfile: Dockerfile
+      dockerfile: seeder.Dockerfile
     depends_on:
       db:
         condition: service_healthy
@@ -79,7 +77,7 @@ services:
       - back-tier
     environment:
       DSH_HOST: db
-      DSH_PORT: 5432
+      DSH_PORT: 5433
       DSH_DB: dsh
       DSH_USER: dsh
       DSH_PASSWORD: dsh
