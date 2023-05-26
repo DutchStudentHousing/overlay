@@ -10,7 +10,7 @@ services:
     networks:
       - front-tier
     ports:
-      - "80:80"
+      - "8080:80"
     environment:
       - BACKEND_HOST=backend
       - BACKEND_PORT=3000
@@ -35,7 +35,7 @@ services:
       - front-tier
       - back-tier
     ports:
-      - "3000:8433"
+      - "3000:3000"
     environment:
       - DSH_USER=dsh
       - DSH_DB=dsh
@@ -65,10 +65,12 @@ services:
       timeout: 30s
       retries: 3
     ports:
-      - "5432:5432"
+      - "5432"
   seeder:
     build:
       dockerfile: seeder.Dockerfile
+    volumes:
+      - ./setup-seeder.sh:/app/setup.sh:z
     depends_on:
       db:
         condition: service_healthy
