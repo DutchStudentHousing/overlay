@@ -65,7 +65,7 @@ services:
       timeout: 30s
       retries: 3
     ports:
-      - "5432"
+      - "5432:5432"
   seeder:
     build:
       dockerfile: seeder.Dockerfile
