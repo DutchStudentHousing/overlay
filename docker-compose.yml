@@ -42,7 +42,7 @@ services:
       # - DSH_PASS_FILE=/run/secrets/postgres-passwd
       - DSH_PASS=dsh
       - DSH_HOST=db
-      - DSH_PORT=5433
+      - DSH_PORT=5432
       # secrets:
       #   - postgres-passwd
   db:
@@ -65,7 +65,7 @@ services:
       timeout: 30s
       retries: 3
     ports:
-      - "5433:5432"
+      - "5432:5432"
   seeder:
     build:
       dockerfile: seeder.Dockerfile
@@ -77,15 +77,10 @@ services:
       - back-tier
     environment:
       DSH_HOST: db
-      DSH_PORT: 5433
+      DSH_PORT: 5432
       DSH_DB: dsh
       DSH_USER: dsh
       DSH_PASSWORD: dsh
-
-secrets:
-  postgres-passwd:
-    external: true
-
 
 networks:
   front-tier:
