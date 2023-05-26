@@ -3,6 +3,7 @@ WORKDIR /tmp/frontendbuild
 # COPY package*.json ./
 RUN git clone https://github.com/DutchStudentHousing/Frontend-draft.git .
 RUN npm install
+RUN npm install -g ng-openapi-gen
 # COPY . .
 RUN npm run build
 
