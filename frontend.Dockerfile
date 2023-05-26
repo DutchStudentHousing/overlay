@@ -1,7 +1,7 @@
 FROM node:20 as BUILD
 WORKDIR /tmp/frontendbuild
 # COPY package*.json ./
-RUN git clone https://github.com/DutchStudentHousing/Fronted-draft.git
+RUN git clone https://github.com/DutchStudentHousing/Frontend-draft.git .
 RUN npm install
 # COPY . .
 RUN npm run build
