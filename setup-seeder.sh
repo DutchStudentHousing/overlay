@@ -9,3 +9,7 @@ echo <<EOF > /etc/apt/sources.list.d/github_git-lfs.list
 EOF
 apt-get update -y
 apt-get install git-lfs -y
+
+
+git clone https://github.com/DutchStudentHousing/DSH-Json.git .
+pip install --no-cache-dir -r requirements.txt
