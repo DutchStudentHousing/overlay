@@ -43,6 +43,7 @@ services:
       - DSH_PASS=dsh
       - DSH_HOST=db
       - DSH_PORT=5432
+      - SERVER_PORT=3000
       # secrets:
       #   - postgres-passwd
   db:
