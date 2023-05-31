@@ -6,7 +6,7 @@ RUN git clone https://github.com/DutchStudentHousing/api-reactive.git --recursiv
 RUN gradle build
 
 # package stage
-FROM adoptopenjdk/openjdk11
+FROM ibm-semeru-runtimes:open-11-jre
 LABEL authors="dsh"
 WORKDIR /app
 COPY --from=BUILD /app/build/libs/* .
