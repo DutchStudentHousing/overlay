@@ -39,13 +39,10 @@ services:
     environment:
       - DSH_USER=dsh
       - DSH_DB=dsh
-      # - DSH_PASS_FILE=/run/secrets/postgres-passwd
       - DSH_PASS=dsh
       - DSH_HOST=db
       - DSH_PORT=5432
       - SERVER_PORT=3000
-      # secrets:
-      #   - postgres-passwd
   db:
     image: postgis/postgis # <- replace?
     restart: always
