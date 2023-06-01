@@ -25,6 +25,8 @@ services:
       - front-tier
     ports:
       - "4200:80"
+    environment:
+      - NG_APP_BACKEND=gateway/api
   backend:
     depends_on:
       - db
