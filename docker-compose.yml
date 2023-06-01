@@ -26,7 +26,7 @@ services:
     ports:
       - "4200:80"
     environment:
-      - NG_APP_BACKEND=gateway
+      - NG_APP_ENV=gateway
   backend:
     depends_on:
       - db
