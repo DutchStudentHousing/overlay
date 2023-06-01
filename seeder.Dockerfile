@@ -10,8 +10,7 @@ WORKDIR /app
 
 #RUN apt-get install debian-archive-keyring curl gnupg apt-transport-https git -y
 #RUN mkdir -p /etc/apt/keyrings/
-COPY ./setup-seeder.sh /tmp/
-RUN bash /tmp/setup-seeder.sh
+RUN apt-get update -y && apt-get install curl git -y
 
 # Add the current directory contents into the container at /app
 RUN git clone https://github.com/DutchStudentHousing/DSH-Json.git .
