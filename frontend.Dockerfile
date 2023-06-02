@@ -3,7 +3,7 @@ ENV API_URL $API_URL
 FROM node:20 as BUILD
 WORKDIR /tmp/frontendbuild
 # COPY package*.json ./
-RUN git clone -b feature-env-gen --single-branch https://github.com/DutchStudentHousing/Frontend-draft.git --recursive .
+RUN git clone -b main --single-branch https://github.com/DutchStudentHousing/Frontend-draft.git --recursive .
 RUN npm install
 # COPY . .
 RUN npm run build
