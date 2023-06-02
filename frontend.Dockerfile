@@ -1,5 +1,3 @@
-ARG API_URL
-ENV API_URL $API_URL
 FROM node:20 as BUILD
 WORKDIR /tmp/frontendbuild
 # COPY package*.json ./
