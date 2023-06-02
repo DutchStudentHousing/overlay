@@ -20,6 +20,8 @@ services:
   frontend:
     build:
       dockerfile: ./frontend.Dockerfile
+      args:
+        API_URL: gateway
     restart: always
     networks:
       - front-tier
@@ -51,7 +53,7 @@ services:
     networks:
       - back-tier
     volumes:
-      - ./db-data:/var/lib/postgresql/data:Z
+      - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=dsh
       - POSTGRES_USER=dsh
@@ -80,7 +82,8 @@ services:
       DSH_DB: dsh
       DSH_USER: dsh
       DSH_PASSWORD: dsh
-
+volumes:
+  db-data:
 networks:
   front-tier:
   back-tier:
