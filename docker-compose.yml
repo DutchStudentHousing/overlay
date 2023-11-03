@@ -48,7 +48,7 @@ services:
       - DSH_PORT=5432
       - SERVER_PORT=3000
   db:
-    image: postgis/postgis # <- replace?
+    image: postgis/postgis:15-3.4 # <- replace?
     restart: always
     networks:
       - back-tier
